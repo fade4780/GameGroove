@@ -1,0 +1,10 @@
+[11-Apr-2025 16:04:01 Europe/Moscow] Ошибка PDO при регистрации пользователя: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'where clause'
+[11-Apr-2025 16:04:01 Europe/Moscow] Ошибка регистрации: Ошибка при создании учетной записи. Пожалуйста, попробуйте позже. для пользователя: test123
+[11-Apr-2025 16:06:08 Europe/Moscow] Ошибка PDO при регистрации пользователя: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'where clause'
+[11-Apr-2025 16:06:08 Europe/Moscow] Ошибка регистрации: Ошибка при создании учетной записи. Пожалуйста, попробуйте позже. для пользователя: test123
+[11-Apr-2025 16:12:03 Europe/Moscow] Ошибка PDO при регистрации пользователя: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'where clause'
+[11-Apr-2025 16:12:03 Europe/Moscow] Ошибка регистрации: Ошибка при создании учетной записи. Пожалуйста, попробуйте позже. для пользователя: test123
+[11-Apr-2025 16:13:43 Europe/Moscow] Ошибка PDO при регистрации пользователя: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'where clause'
+[11-Apr-2025 16:13:43 Europe/Moscow] Ошибка регистрации: Ошибка при создании учетной записи. Пожалуйста, попробуйте позже. для пользователя: admin12
+[11-Apr-2025 16:15:26 Europe/Moscow] Ошибка PDO при регистрации пользователя: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'email' in 'where clause'
+[11-Apr-2025 16:15:26 Europe/Moscow] Ошибка регистрации: Ошибка при создании учетной записи. Пожалуйста, попробуйте позже. для пользователя: test123

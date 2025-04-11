@@ -1,0 +1,263 @@
+/* Основные стили профиля */
+.profile-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 2rem;
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Заголовок профиля */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-color);
+    border: 3px solid var(--primary-color);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.2);
+}
+
+.profile-avatar i {
+    font-size: 4rem;
+    color: var(--primary-color);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-username {
+    font-size: 2.5rem;
+    margin: 0;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.profile-role {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin: 0.5rem 0;
+}
+
+.profile-date {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* Секции профиля */
+.profile-section {
+    margin-bottom: 3rem;
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    position: relative;
+    padding-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-color);
+}
+
+/* Карточки проектов и инвестиций */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.project-card, .investment-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.project-card:hover, .investment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.project-image, .investment-image {
+    width: 100%;
+    height: 200px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background: var(--background-color);
+}
+
+.project-image img, .investment-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.project-title, .investment-title {
+    font-size: 1.4rem;
+    margin: 0 0 1rem 0;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.project-description, .investment-amount {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.project-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+}
+
+.stat i {
+    color: var(--primary-color);
+}
+
+/* Кнопки и действия */
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--border-color);
+    transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-avatar i {
+        font-size: 3rem;
+    }
+
+    .profile-username {
+        font-size: 2rem;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Дополнительные эффекты */
+.project-card::before, .investment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.project-card:hover::before, .investment-card:hover::before {
+    opacity: 1;
+} 

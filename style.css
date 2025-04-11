@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  header {
+    background-color: #340439;
+    padding: 10px 20px;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar .logo img {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+  }
+  
+  .nav-links li {
+    margin-left: 20px;
+  }
+  
+  .nav-links a {
+    color: rgb(223, 183, 243);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  
+  .auth-buttons .btn {
+    background-color: #ff9f00;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  form {
+    width: 300px;
+    margin: 50px auto;
+    background-color: #d89bf4;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  input[type="text"], input[type="password"], input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  footer {
+    text-align: center;
+    background-color: #340439;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .hero {
+    text-align: center;
+    padding: 50px 0;
+  }
+  
+  .hero h1 {
+    font-size: 36px;
+  }
+  
+  .hero p {
+    font-size: 20px;
+  }
+  
+  .btn {
+    background-color: #00ff26;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .form-container {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .menu ul li a {
+    text-decoration: none;
+    color: black;
+    padding: 10px 15px;
+}
+
+.menu ul li a.active {
+    font-weight: bold;
+    color: #007bff; /* Синий цвет для активной вкладки */
+    border-bottom: 2px solid #007bff;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 20px; /* Расстояние между кнопками */
+  }
+
+  .social-button {
+    width: 80px; /* Размер кнопки */
+    height: 80px;
+    border-radius: 50%; /* Делает кнопку круглой */
+    overflow: hidden; /* Чтобы изображение не выходило за границы */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень */
+    cursor: pointer;
+    transition: transform 0.3s; /* Анимация при наведении */
+  }
+
+  .social-button:hover {
+    transform: scale(1.1); /* Увеличение кнопки при наведении */
+  }
+
+  .social-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Чтобы изображение заполнило круг */
+  }
+ 
+  .blockSlider {
+    display: flex;
+    max-width: 768px;
+    width: 100%;
+    height: 388px;
+    border:  1px solid black;
+    border-radius: 24px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+}
+.FullArea{
+    display:flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.pointsAreaSize{
+    width:  150px;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 5%;
+}
+.point{
+    display: flex;
+    width: 12px;
+    height: 12px;
+    background: rgb(229, 229, 229);
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+.point:hover{
+    background: rgb(160, 167, 243);
+}
+.imagesArea{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.imageSlider{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    animation-name: Animation;
+    animation-duration: 1s;
+}
+.activeImage{
+    background: rgb(115, 126, 250);
+    display: flex;
+    border-radius: 20px;
+}
+.btnsAreaSize{
+    position: absolute;
+    display: flex;
+    width: 95%;
+    justify-content: space-between;
+}
+i.fa.fa-angle-left, i.fa.fa-angle-right{
+    color: rgb(115, 126, 250);
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: 800;
+}
+.blockArrow{
+    display: flex;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: 1ps solid white;
+    border-radius: 50px;
+    align-items: center;
+    justify-content: center;
+}
+.blockArrow:hover{
+    background: rgba(39,39,39,0.59);
+    border: 1px solid white;
+    color:white;
+    cursor: pointer;
+}
+
+.blockArrow:active{
+    background: rgba(16,16,16,0.59);
+    border: 1px solid white;
+    color: white;
+    cursor: pointer;
+}
+
+@-webkit-keyframes Animation {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}

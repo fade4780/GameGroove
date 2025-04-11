@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товары</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <img src="images/gamegroovelogo.png" alt="Логотип компании" width="64" height="64" class="logo">
+            </a>
+            <ul class="nav-links">
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="products.html" class="active">Товар</a></li>
+                <li><a href="contact.html">Где нас найти?</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn">Авторизация</a>
+                <a href="register.html" class="btn">Регистрация</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>Наши товары</h1>
+        <p>Мы предлагаем широкий ассортимент товаров. Ознакомьтесь с нашими лучшими предложениями.</p>
+
+        <!-- Слайдер -->
+        <div class="blockSlider" id="blockSlider">
+            <div class="FullArea">
+                <div class="imagesArea">
+                    <img class="imageSlider" src="images/testproject1.jpg" alt="">
+                    <img class="imageSlider" src="images/testproject2.jpg" alt="">
+                    <img class="imageSlider" src="images/testproject3.jpg" alt="">
+                    <img class="imageSlider" src="images/testproject4.jpg" alt="">
+                </div>
+    
+                <div class="pointsAreaSize">
+                    <span class="point"></span>
+                    <span class="point"></span>
+                    <span class="point"></span>
+                    <span class="point"></span>
+                </div>
+    
+                <div class="btnsAreaSize">
+                    <div class="blockArrow" id="leftBtn"><i class="fa fa-angle-left" aria-hidden="true"></i></div>
+                    <div class="blockArrow" id="rightBtn"><i class="fa fa-angle-right" aria-hidden="true"></i></div>
+                </div>
+            </div>
+    
+        </div>
+        <script src="script.js"></script>
+    </main>
+    <footer>
+        <p>&copy; 2024 Все права защищены.</p>
+    </footer>
+</body>
+</html>
