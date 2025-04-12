@@ -1,236 +1,544 @@
-.project-details {
+/* Основные стили для страницы проекта */
+.project-container {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
-.project-details h1 {
+/* Заголовок проекта */
+.project-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.project-title {
     font-size: 2.5rem;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-}
-
-.project-meta {
-    color: var(--text-secondary);
+    font-weight: 700;
+    color: var(--text-color);
     margin-bottom: 2rem;
-    font-size: 1.1rem;
+    line-height: 1.2;
 }
 
+/* Галерея изображений */
 .project-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
+    position: relative;
     margin-bottom: 2rem;
-}
-
-.project-image {
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
-    aspect-ratio: 16/9;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.project-image.main-image {
-    grid-column: 1 / -1;
-    aspect-ratio: 21/9;
-}
-
-.project-image img {
+.main-image {
     width: 100%;
-    height: 100%;
+    height: 400px;
     object-fit: cover;
-    transition: transform 0.3s ease;
 }
 
-.project-image:hover img {
+.gallery-thumbnails {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.thumbnail:hover {
     transform: scale(1.05);
+}
+
+/* Информация о проекте */
+.project-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
 .project-description {
     font-size: 1.1rem;
-    line-height: 1.8;
-    color: var(--text-primary);
-    margin-bottom: 2rem;
-    white-space: pre-wrap;
+    line-height: 1.6;
+    color: var(--text-color);
 }
 
-.funding-info {
-    background: #f8f9fa;
-    padding: 2rem;
-    border-radius: 12px;
-    margin-bottom: 2rem;
+.project-stats {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* Прогресс-бар финансирования */
+.funding-progress {
+    background: var(--bg-secondary);
+    height: 8px;
+    border-radius: 4px;
+    margin: 1.5rem 0;
+    overflow: hidden;
 }
 
 .progress-bar {
-    width: 100%;
-    height: 12px;
-    background: #e9ecef;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-}
-
-.progress {
     height: 100%;
-    background: #0d6efd;
-    border-radius: 6px;
+    background: var(--primary-color);
     transition: width 0.3s ease;
 }
 
-.funding-info p {
-    font-size: 1.2rem;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-.investment-form {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid #dee2e6;
-    margin-bottom: 2rem;
-}
-
-.investment-form h2 {
-    font-size: 1.5rem;
-    color: var(--text-primary);
-    margin-bottom: 1.5rem;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text-primary);
-    font-weight: 500;
-}
-
-.form-group input {
+/* Кнопка инвестирования */
+.invest-button {
     width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #dee2e6;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.form-group input:focus {
-    border-color: #0d6efd;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
-}
-
-.help-text {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin-top: 0.5rem;
-}
-
-.btn-submit {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: #0d6efd;
+    padding: 1rem;
+    background: var(--primary-color);
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.2s;
 }
 
-.btn-submit:hover {
-    background: #0b5ed7;
-    transform: translateY(-2px);
+.invest-button:hover {
+    background: var(--primary-dark);
 }
 
-.comments {
-    margin-top: 3rem;
+.invest-button i {
+    font-size: 1.25rem;
 }
 
-.comments h2 {
-    font-size: 1.75rem;
-    color: var(--text-primary);
+/* Информация о создателе */
+.creator-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.creator-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.creator-details {
+    flex-grow: 1;
+}
+
+.creator-name {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.creator-role {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    .project-info {
+        grid-template-columns: 1fr;
+    }
+
+    .project-title {
+        font-size: 2rem;
+    }
+
+    .main-image {
+        height: 300px;
+    }
+
+    .gallery-thumbnails {
+        overflow-x: auto;
+        padding-bottom: 1rem;
+    }
+
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+    }
+}
+
+/* Дополнительные стили для категории и тегов */
+.project-category {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.project-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+.tag {
+    padding: 0.3rem 0.8rem;
+    background: var(--bg-secondary);
+    border-radius: 15px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Стили для комментариев */
+.project-comments {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+}
+
+.project-comments h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.comment-form,
+.reply-form {
     margin-bottom: 1.5rem;
 }
 
-.comment-form {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid #dee2e6;
-    margin-bottom: 2rem;
-}
-
-.comment-form textarea {
+.comment-form textarea,
+.reply-form textarea {
     width: 100%;
-    min-height: 100px;
     padding: 0.75rem;
-    border: 2px solid #dee2e6;
-    border-radius: 8px;
-    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
     resize: vertical;
-    transition: all 0.3s ease;
+    min-height: 100px;
+    margin-bottom: 0.5rem;
 }
 
-.comment-form textarea:focus {
-    border-color: #0d6efd;
+.comment-form textarea:focus,
+.reply-form textarea:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
 }
 
 .comments-list {
-    display: grid;
-    gap: 1rem;
+    margin-top: 1.5rem;
 }
 
 .comment {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--input-bg);
+    border-radius: var(--border-radius);
+    position: relative;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .comment-author {
     font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.25rem;
+    color: var(--primary-color);
 }
 
 .comment-date {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.delete-comment-form {
+    margin-left: auto;
+}
+
+.delete-comment {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.delete-comment:hover {
+    color: var(--error-color);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.comment-text {
+    color: var(--text-color);
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+.replies {
+    margin-top: 1rem;
+    margin-left: 2rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--border-color);
+}
+
+.reply {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+}
+
+.reply .comment-header {
+    margin-bottom: 0.25rem;
+}
+
+.reply .comment-text {
+    font-size: 0.9rem;
+}
+
+.reply-form {
+    margin-top: 0.5rem;
+    margin-left: 2rem;
+}
+
+.reply-form textarea {
+    min-height: 60px;
+    font-size: 0.9rem;
+}
+
+.no-comments {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .replies {
+        margin-left: 1rem;
+    }
+    
+    .reply-form {
+        margin-left: 1rem;
+    }
+}
+
+/* Стили для похожих проектов */
+.similar-projects {
+    margin-top: 3rem;
+}
+
+.similar-projects h2 {
+    margin-bottom: 1.5rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 1rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.card-description {
+    font-size: 0.9rem;
     color: var(--text-secondary);
     margin-bottom: 1rem;
 }
 
-.comment-content {
-    color: var(--text-primary);
-    line-height: 1.6;
-    white-space: pre-wrap;
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-color);
 }
 
-@media (max-width: 768px) {
-    .project-details h1 {
-        font-size: 2rem;
-    }
+.card-stats {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
 
-    .project-gallery {
-        grid-template-columns: 1fr;
-    }
+.investment-input {
+    margin-bottom: 1rem;
+}
 
-    .project-image.main-image {
-        aspect-ratio: 16/9;
-    }
+.investment-input input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
 
-    .funding-info,
-    .investment-form,
-    .comment-form,
-    .comment {
-        padding: 1rem;
-    }
+.investment-input input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
+}
+
+/* Стили для формы загрузки изображений */
+.image-upload-form {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.image-upload-form h3 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+.file-input-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.file-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: white;
+}
+
+.upload-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.upload-button:hover {
+    background: var(--primary-dark);
+}
+
+.upload-info {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.login-prompt {
+    background: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-prompt p {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.login-prompt a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-prompt a:hover {
+    text-decoration: underline;
+}
+
+.no-comments {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed var(--border-color);
+}
+
+.no-comments p {
+    margin: 0;
+    font-size: 0.95rem;
 } 

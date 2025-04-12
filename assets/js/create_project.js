@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     const mediaUpload = document.getElementById('mediaUpload');
-    const mediaInput = document.getElementById('images');
+    const fileInput = document.getElementById('project_images');
     const mediaPreview = document.getElementById('mediaPreview');
     const projectForm = document.getElementById('projectForm');
-    let files = [];
 
     // Обработка клика по зоне загрузки
-    mediaUpload.addEventListener('click', () => mediaInput.click());
+    mediaUpload.addEventListener('click', function() {
+        fileInput.click();
+    });
 
     // Предотвращаем открытие файла при перетаскивании
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -19,111 +20,114 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Подсветка при перетаскивании
-    ['dragenter', 'dragover'].forEach(eventName => {
-        mediaUpload.addEventListener(eventName, highlight, false);
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-        mediaUpload.addEventListener(eventName, unhighlight, false);
-    });
-
-    function highlight() {
+    mediaUpload.addEventListener('dragover', function() {
         mediaUpload.classList.add('dragover');
-    }
+    });
 
-    function unhighlight() {
+    mediaUpload.addEventListener('dragleave', function() {
         mediaUpload.classList.remove('dragover');
-    }
+    });
 
-    // Обработка загрузки файлов
-    mediaUpload.addEventListener('drop', handleDrop, false);
-    mediaInput.addEventListener('change', handleFiles, false);
-
-    function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const droppedFiles = dt.files;
-        handleFiles({ target: { files: droppedFiles } });
-    }
-
-    function handleFiles(e) {
-        const newFiles = Array.from(e.target.files);
+    mediaUpload.addEventListener('drop', function(e) {
+        mediaUpload.classList.remove('dragover');
+        const dt = new DataTransfer();
         
-        // Проверяем общее количество файлов
-        if (files.length + newFiles.length > 5) {
+        // Добавляем существующие файлы
+        if (fileInput.files.length > 0) {
+            Array.from(fileInput.files).forEach(file => dt.items.add(file));
+        }
+        
+        // Добавляем новые файлы
+        Array.from(e.dataTransfer.files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                dt.items.add(file);
+            }
+        });
+        
+        fileInput.files = dt.files;
+        updatePreview();
+    });
+
+    // Обработка выбора файлов
+    fileInput.addEventListener('change', updatePreview);
+
+    function updatePreview() {
+        mediaPreview.innerHTML = '';
+        const files = fileInput.files;
+
+        if (files.length > 5) {
             alert('Максимальное количество изображений - 5');
-            return;
+            const dt = new DataTransfer();
+            for (let i = 0; i < 5; i++) {
+                dt.items.add(files[i]);
+            }
+            fileInput.files = dt.files;
         }
 
-        // Проверяем каждый файл
-        newFiles.forEach(file => {
-            if (!file.type.startsWith('image/')) {
-                alert('Пожалуйста, загружайте только изображения');
-                return;
-            }
+        Array.from(fileInput.files).forEach((file, index) => {
+            if (!file.type.startsWith('image/')) return;
 
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Размер каждого файла не должен превышать 5 МБ');
-                return;
-            }
+            const reader = new FileReader();
+            const preview = document.createElement('div');
+            preview.className = 'preview-item';
 
-            files.push(file);
-            previewFile(file);
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                    <div class="preview-image-container">
+                        <img src="${e.target.result}" alt="Preview">
+                        <div class="preview-actions">
+                            <button type="button" class="make-main" data-index="${index}" title="Сделать главным">
+                                <i class="ri-star-${index === 0 ? 'fill' : 'line'}"></i>
+                            </button>
+                            <button type="button" class="remove-image" data-index="${index}" title="Удалить">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    ${index === 0 ? '<div class="main-badge">Главное</div>' : ''}
+                `;
+            };
+
+            reader.readAsDataURL(file);
+            mediaPreview.appendChild(preview);
         });
-    }
 
-    function previewFile(file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const previewItem = document.createElement('div');
-            previewItem.className = 'preview-item';
-            
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            
-            const actions = document.createElement('div');
-            actions.className = 'actions';
-            
-            const setMainBtn = document.createElement('button');
-            setMainBtn.innerHTML = '<i class="ri-star-line"></i>';
-            setMainBtn.title = 'Сделать главным';
-            setMainBtn.onclick = function() {
-                setMainImage(previewItem);
-            };
-            
-            const removeBtn = document.createElement('button');
-            removeBtn.innerHTML = '<i class="ri-delete-bin-line"></i>';
-            removeBtn.title = 'Удалить';
-            removeBtn.onclick = function() {
-                removeImage(previewItem, file);
-            };
-            
-            actions.appendChild(setMainBtn);
-            actions.appendChild(removeBtn);
-            
-            previewItem.appendChild(img);
-            previewItem.appendChild(actions);
-            mediaPreview.appendChild(previewItem);
-        };
-        reader.readAsDataURL(file);
-    }
+        // Добавляем обработчики для кнопок
+        setTimeout(() => {
+            // Удаление изображения
+            document.querySelectorAll('.remove-image').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    const dt = new DataTransfer();
+                    const files = fileInput.files;
 
-    function setMainImage(previewItem) {
-        // Удаляем метку главного изображения у всех
-        document.querySelectorAll('.main-badge').forEach(badge => badge.remove());
-        
-        // Добавляем метку главного изображения
-        const mainBadge = document.createElement('div');
-        mainBadge.className = 'main-badge';
-        mainBadge.textContent = 'Главное';
-        previewItem.appendChild(mainBadge);
-        
-        // Перемещаем выбранное изображение в начало
-        mediaPreview.insertBefore(previewItem, mediaPreview.firstChild);
-    }
+                    Array.from(files).forEach((file, i) => {
+                        if (i !== index) dt.items.add(file);
+                    });
 
-    function removeImage(previewItem, file) {
-        previewItem.remove();
-        files = files.filter(f => f !== file);
+                    fileInput.files = dt.files;
+                    updatePreview();
+                });
+            });
+
+            // Сделать главным
+            document.querySelectorAll('.make-main').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    const dt = new DataTransfer();
+                    const files = Array.from(fileInput.files);
+                    
+                    // Перемещаем выбранный файл в начало
+                    const selectedFile = files.splice(index, 1)[0];
+                    files.unshift(selectedFile);
+                    
+                    // Обновляем файлы
+                    files.forEach(file => dt.items.add(file));
+                    fileInput.files = dt.files;
+                    updatePreview();
+                });
+            });
+        }, 100);
     }
 
     // Валидация формы

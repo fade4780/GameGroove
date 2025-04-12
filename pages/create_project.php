@@ -24,6 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $goal_amount = floatval(str_replace(' ', '', $_POST['goal_amount'] ?? 0));
     $duration = intval($_POST['duration'] ?? 0);
 
+    // Отладочная информация
+    error_log('Debug: POST request received');
+    error_log('Debug: Files in $_FILES: ' . print_r($_FILES, true));
+
     // Валидация
     if (empty($title)) {
         $error = 'Введите название проекта';
@@ -38,21 +42,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Обработка загрузки изображений
         $image_urls = [];
-        if (!empty($_FILES['images']['name'][0])) {
+        if (!empty($_FILES['project_images']['name'][0])) {
+            error_log('Debug: Found images to upload');
             $upload_dir = '../uploads/projects/';
             
             // Создаем директорию, если её нет
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
+                error_log('Debug: Created upload directory: ' . $upload_dir);
             }
 
-            foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
-                if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
-                    $file_extension = strtolower(pathinfo($_FILES['images']['name'][$key], PATHINFO_EXTENSION));
+            foreach ($_FILES['project_images']['tmp_name'] as $key => $tmp_name) {
+                error_log('Debug: Processing image ' . $key);
+                if ($_FILES['project_images']['error'][$key] === UPLOAD_ERR_OK) {
+                    $file_extension = strtolower(pathinfo($_FILES['project_images']['name'][$key], PATHINFO_EXTENSION));
                     $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
                     if (!in_array($file_extension, $allowed_extensions)) {
                         $error = 'Допустимые форматы изображений: JPG, PNG, GIF, WEBP';
+                        error_log('Debug: Invalid file extension: ' . $file_extension);
                         break;
                     }
 
@@ -60,25 +68,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $filename = uniqid('project_') . '_' . time() . '.' . $file_extension;
                     $filepath = $upload_dir . $filename;
 
-                    // Проверяем размер файла (5MB максимум)
-                    if ($_FILES['images']['size'][$key] > 5 * 1024 * 1024) {
-                        $error = 'Размер каждого файла не должен превышать 5 МБ';
-                        break;
-                    }
-
+                    error_log('Debug: Attempting to move file to: ' . $filepath);
                     if (move_uploaded_file($tmp_name, $filepath)) {
-                        $image_urls[] = 'uploads/projects/' . $filename;
+                        error_log('Debug: File moved successfully');
+                        $image_urls[] = '/uploads/projects/' . $filename;
                     } else {
                         $error = 'Ошибка при загрузке изображения';
+                        error_log('Debug: Failed to move uploaded file. PHP Error: ' . error_get_last()['message']);
                         break;
                     }
+                } else {
+                    error_log('Debug: Upload error code: ' . $_FILES['project_images']['error'][$key]);
                 }
             }
+        } else {
+            error_log('Debug: No images found in upload');
         }
 
         if (empty($error)) {
             try {
                 $db->begin_transaction();
+                error_log('Debug: Started database transaction');
 
                 // Добавляем проект
                 $query = "INSERT INTO projects (title, description, category_id, goal_amount, duration, user_id, status) 
@@ -96,9 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 $project_id = $db->insert_id;
+                error_log('Debug: Created project with ID: ' . $project_id);
 
                 // Добавляем изображения
                 if (!empty($image_urls)) {
+                    error_log('Debug: Adding images to database: ' . print_r($image_urls, true));
                     $image_query = "INSERT INTO project_images (project_id, image_url, is_main) VALUES (?, ?, ?)";
                     $image_stmt = $db->prepare($image_query);
 
@@ -109,11 +121,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if (!$image_stmt->execute()) {
                             throw new Exception('Ошибка при добавлении изображения: ' . $db->error);
                         }
+                        error_log('Debug: Added image: ' . $url);
                     }
                     $image_stmt->close();
                 }
 
                 $db->commit();
+                error_log('Debug: Transaction committed successfully');
                 
                 // Перенаправляем на страницу проекта
                 header('Location: ' . SITE_URL . '/pages/project.php?id=' . $project_id);
@@ -121,6 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             } catch (Exception $e) {
                 $db->rollback();
+                error_log('Debug: Error occurred: ' . $e->getMessage());
                 $error = $e->getMessage();
             }
         }
@@ -182,7 +197,7 @@ include '../includes/header.php';
             <h2>Медиа материалы</h2>
             
             <div class="media-upload" id="mediaUpload">
-                <input type="file" id="images" name="images[]" accept="image/*" multiple style="display: none">
+                <input type="file" id="project_images" name="project_images[]" accept="image/*" multiple style="display: none">
                 <i class="ri-upload-cloud-line"></i>
                 <h3>Перетащите изображения сюда</h3>
                 <p>или нажмите для выбора файлов</p>

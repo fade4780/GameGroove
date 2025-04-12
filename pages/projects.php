@@ -9,7 +9,8 @@ $sort = isset($_GET['sort']) ? $_GET['sort'] : 'newest';
 
 // Базовый SQL запрос
 $sql = "SELECT p.*, c.name as category_name, u.username as developer_name,
-        (SELECT COUNT(*) FROM investments WHERE project_id = p.id) as investors_count
+        (SELECT COUNT(*) FROM investments WHERE project_id = p.id) as investors_count,
+        (SELECT image_url FROM project_images WHERE project_id = p.id AND is_main = 1 LIMIT 1) as main_image
         FROM projects p 
         LEFT JOIN categories c ON p.category_id = c.id
         LEFT JOIN users u ON p.user_id = u.id
@@ -33,7 +34,13 @@ switch ($sort) {
         $sql .= " ORDER BY p.created_at DESC";
 }
 
-$projects = $db->query($sql)->fetch_all(MYSQLI_ASSOC);
+$projects = $db->query($sql);
+
+if (!$projects) {
+    die('Ошибка запроса: ' . $db->error);
+}
+
+$projects = $projects->fetch_all(MYSQLI_ASSOC);
 
 // Получаем все категории для фильтра
 $categories = $db->query("SELECT * FROM categories ORDER BY name")->fetch_all(MYSQLI_ASSOC);
@@ -93,21 +100,22 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name")->fetch_all(MY
                     <?php foreach ($projects as $project): ?>
                         <div class="project-card">
                             <div class="project-image">
-                                <img src="<?php echo $project['image_url'] ?: SITE_URL . '/assets/images/placeholder.jpg'; ?>" alt="<?php echo e($project['title']); ?>">
-                                <div class="project-category"><?php echo e($project['category_name']); ?></div>
+                                <img src="<?php echo $project['main_image'] ? '../' . $project['main_image'] : '../assets/images/placeholder.jpg'; ?>" 
+                                     alt="<?php echo htmlspecialchars($project['title']); ?>">
+                                <div class="project-category"><?php echo htmlspecialchars($project['category_name']); ?></div>
                             </div>
                             <div class="project-info">
-                                <h3><?php echo e($project['title']); ?></h3>
+                                <h3><?php echo htmlspecialchars($project['title']); ?></h3>
                                 <p class="project-developer">
                                     <i class="ri-user-line"></i>
-                                    <?php echo e($project['developer_name']); ?>
+                                    <?php echo htmlspecialchars($project['developer_name']); ?>
                                 </p>
-                                <p class="project-description"><?php echo mb_substr(e($project['description']), 0, 100); ?>...</p>
+                                <p class="project-description"><?php echo mb_substr(htmlspecialchars($project['description']), 0, 100); ?>...</p>
                                 <div class="project-stats">
                                     <div class="stat">
                                         <i class="ri-money-dollar-circle-line"></i>
-                                        <span><?php echo number_format($project['current_amount'], 0, '.', ' '); ?> ₽</span>
-                                        <small>из <?php echo number_format($project['goal_amount'], 0, '.', ' '); ?> ₽</small>
+                                        <span><?php echo number_format((float)$project['current_amount'], 0, '.', ' '); ?> ₽</span>
+                                        <small>из <?php echo number_format((float)$project['goal_amount'], 0, '.', ' '); ?> ₽</small>
                                     </div>
                                     <div class="stat">
                                         <i class="ri-group-line"></i>
@@ -117,13 +125,21 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name")->fetch_all(MY
                                 </div>
                                 <div class="project-progress">
                                     <div class="progress-bar">
-                                        <div class="progress" style="width: <?php echo min(100, ($project['current_amount'] / $project['goal_amount']) * 100); ?>%"></div>
+                                        <div class="progress" style="width: <?php 
+                                            $percentage = $project['goal_amount'] > 0 ? 
+                                                min(100, ((float)$project['current_amount'] / (float)$project['goal_amount']) * 100) : 0;
+                                            echo $percentage;
+                                        ?>%"></div>
                                     </div>
                                     <span class="progress-text">
-                                        <?php echo round(($project['current_amount'] / $project['goal_amount']) * 100); ?>%
+                                        <?php 
+                                            $percentage = $project['goal_amount'] > 0 ? 
+                                                round(((float)$project['current_amount'] / (float)$project['goal_amount']) * 100) : 0;
+                                            echo $percentage;
+                                        ?>%
                                     </span>
                                 </div>
-                                <a href="<?php echo SITE_URL; ?>/pages/project.php?id=<?php echo $project['id']; ?>" class="btn-primary btn-block">
+                                <a href="project.php?id=<?php echo $project['id']; ?>" class="btn-primary btn-block">
                                     Подробнее
                                 </a>
                             </div>

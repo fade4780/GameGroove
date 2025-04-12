@@ -74,48 +74,51 @@
 
 .media-upload {
     border: 2px dashed var(--border-color);
-    border-radius: 12px;
-    padding: 3rem 2rem;
+    border-radius: 8px;
+    padding: 2rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    background: var(--bg-primary);
+    transition: all 0.2s;
 }
 
 .media-upload:hover,
 .media-upload.dragover {
-    border-color: var(--accent-color);
+    border-color: var(--primary-color);
     background: var(--bg-secondary);
 }
 
 .media-upload i {
-    font-size: 3rem;
-    color: var(--accent-color);
+    font-size: 2rem;
+    color: var(--primary-color);
     margin-bottom: 1rem;
 }
 
 .media-upload h3 {
-    font-size: 1.25rem;
-    color: var(--text-primary);
     margin-bottom: 0.5rem;
 }
 
-.media-upload p {
+.media-upload .help-text {
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
 }
 
 .media-preview {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
 
 .preview-item {
     position: relative;
     border-radius: 8px;
     overflow: hidden;
+    background: var(--bg-secondary);
+}
+
+.preview-image-container {
+    position: relative;
     aspect-ratio: 16/9;
 }
 
@@ -125,43 +128,48 @@
     object-fit: cover;
 }
 
-.preview-item .actions {
+.preview-actions {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
     display: flex;
     gap: 0.5rem;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s;
 }
 
-.preview-item:hover .actions {
+.preview-item:hover .preview-actions {
     opacity: 1;
 }
 
-.preview-item .actions button {
-    background: rgba(0, 0, 0, 0.7);
+.preview-actions button {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
     border: none;
     border-radius: 4px;
-    color: white;
-    padding: 0.5rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background-color 0.2s;
 }
 
-.preview-item .actions button:hover {
-    background: rgba(0, 0, 0, 0.9);
+.preview-actions button:hover {
+    background: rgba(0, 0, 0, 0.7);
 }
 
-.preview-item .main-badge {
+.main-badge {
     position: absolute;
-    bottom: 0.5rem;
-    left: 0.5rem;
-    background: var(--accent-color);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--primary-color);
     color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
+    padding: 0.25rem;
+    text-align: center;
+    font-size: 0.8rem;
 }
 
 .form-actions {
