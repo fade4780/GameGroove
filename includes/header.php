@@ -33,6 +33,12 @@ mb_internal_encoding('UTF-8');
                     <?php endif; ?>
                     <?php if (isLoggedIn()): ?>
                     <li><a href="<?php echo SITE_URL; ?>/pages/profile.php" class="<?php echo basename($_SERVER['PHP_SELF']) === 'profile.php' ? 'active' : ''; ?>">Профиль</a></li>
+                    <?php if (isAdmin()): ?>
+                    <li><a href="<?php echo SITE_URL; ?>/pages/admin.php" class="<?php echo basename($_SERVER['PHP_SELF']) === 'admin.php' ? 'active' : ''; ?>">
+                        <i class="ri-settings-line"></i>
+                        Админ-панель
+                    </a></li>
+                    <?php endif; ?>
                     <li><a href="<?php echo SITE_URL; ?>/pages/logout.php">Выход</a></li>
                     <?php else: ?>
                     <li><a href="<?php echo SITE_URL; ?>/pages/login.php" class="<?php echo basename($_SERVER['PHP_SELF']) === 'login.php' ? 'active' : ''; ?>">Вход</a></li>

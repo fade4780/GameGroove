@@ -15,10 +15,17 @@ function isDeveloper() {
 }
 
 function isAdmin() {
-    if (!isset($_SESSION['role'])) {
+    global $db;
+    if (!isLoggedIn()) {
         return false;
     }
-    return $_SESSION['role'] === 'admin';
+    
+    $user_id = $_SESSION['user_id'];
+    $result = $db->query("SELECT role FROM users WHERE id = $user_id");
+    if ($result && $user = $result->fetch_assoc()) {
+        return $user['role'] === 'admin';
+    }
+    return false;
 }
 
 function getUserRole() {
