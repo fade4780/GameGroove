@@ -62,16 +62,12 @@ $stats = [
 // Получаем данные в зависимости от выбранной вкладки
 $current_tab = $_GET['tab'] ?? 'dashboard';
 
-$users = $db->query("
-    SELECT u.*, 
-           COUNT(DISTINCT p.id) as projects_count,
-           COUNT(DISTINCT i.id) as investments_count
-    FROM users u
-    LEFT JOIN projects p ON u.id = p.user_id
-    LEFT JOIN investments i ON u.id = i.investor_id
-    GROUP BY u.id
-    ORDER BY u.created_at DESC
-");
+$users_query = "
+    SELECT id, username, role, created_at 
+    FROM users 
+    ORDER BY created_at DESC
+";
+$users_result = $db->query($users_query);
 
 $projects = $db->query("
     SELECT p.*, u.username as developer_name,
@@ -240,54 +236,34 @@ $recent_activities = $db->query("
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Имя</th>
-                            <th>Email</th>
+                            <th>Имя пользователя</th>
                             <th>Роль</th>
-                            <th>Проекты</th>
-                            <th>Инвестиции</th>
                             <th>Дата регистрации</th>
                             <th>Действия</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($u = $users->fetch_assoc()): ?>
+                        <?php while ($user = $users_result->fetch_assoc()): ?>
                             <tr>
-                                <td><?php echo $u['id']; ?></td>
+                                <td><?php echo $user['id']; ?></td>
+                                <td><?php echo htmlspecialchars($user['username']); ?></td>
                                 <td>
-                                    <div class="user-info">
-                                        <img src="<?php echo $u['avatar_url'] ?: SITE_URL . '/assets/images/default-avatar.png'; ?>" alt="Avatar" class="user-avatar">
-                                        <?php echo htmlspecialchars($u['username']); ?>
-                                    </div>
-                                </td>
-                                <td><?php echo htmlspecialchars($u['email']); ?></td>
-                                <td>
-                                    <form method="POST" class="inline-form">
-                                        <input type="hidden" name="action" value="change_role">
-                                        <input type="hidden" name="user_id" value="<?php echo $u['id']; ?>">
-                                        <select name="role" class="form-control form-control-sm" onchange="this.form.submit()">
-                                            <option value="user" <?php echo $u['role'] === 'user' ? 'selected' : ''; ?>>Пользователь</option>
-                                            <option value="admin" <?php echo $u['role'] === 'admin' ? 'selected' : ''; ?>>Администратор</option>
+                                    <form method="POST" class="role-form">
+                                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                        <select name="role" onchange="this.form.submit()">
+                                            <option value="user" <?php echo $user['role'] === 'user' ? 'selected' : ''; ?>>Пользователь</option>
+                                            <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>Администратор</option>
                                         </select>
                                     </form>
                                 </td>
-                                <td><?php echo $u['projects_count']; ?></td>
-                                <td><?php echo $u['investments_count']; ?></td>
-                                <td><?php echo date('d.m.Y H:i', strtotime($u['created_at'])); ?></td>
+                                <td><?php echo date('d.m.Y H:i', strtotime($user['created_at'])); ?></td>
                                 <td>
-                                    <div class="row-actions">
-                                        <button class="action-btn" title="Редактировать">
-                                            <i class="ri-edit-line"></i>
+                                    <form method="POST" class="delete-form" onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?');">
+                                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                        <button type="submit" name="delete_user" class="delete-button">
+                                            <i class="ri-delete-bin-line"></i>
                                         </button>
-                                        <?php if ($u['id'] !== $_SESSION['user_id']): ?>
-                                            <form method="POST" class="inline-form">
-                                                <input type="hidden" name="action" value="delete_user">
-                                                <input type="hidden" name="user_id" value="<?php echo $u['id']; ?>">
-                                                <button type="submit" class="action-btn delete" title="Удалить" onclick="return confirm('Вы уверены?')">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </button>
-                                            </form>
-                                        <?php endif; ?>
-                                    </div>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
