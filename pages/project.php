@@ -9,7 +9,7 @@ $project_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $project = $db->query("
     SELECT p.*, u.username as developer_name, c.name as category_name 
     FROM projects p 
-    JOIN users u ON p.developer_id = u.id 
+    JOIN users u ON p.user_id = u.id 
     LEFT JOIN categories c ON p.category_id = c.id 
     WHERE p.id = $project_id
 ")->fetch_assoc();
@@ -18,6 +18,13 @@ if (!$project) {
     header('Location: projects.php');
     exit();
 }
+
+// Получаем изображения проекта
+$images = $db->query("
+    SELECT * FROM project_images 
+    WHERE project_id = $project_id 
+    ORDER BY is_main DESC, created_at ASC
+");
 
 // Получаем комментарии к проекту
 $comments = $db->query("
@@ -118,12 +125,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id']) && isse
                 Категория: <?php echo htmlspecialchars($project['category_name']); ?>
             </p>
             
-            <?php if ($project['image_path']): ?>
-                <div class="project-image">
-                    <img src="../<?php echo htmlspecialchars($project['image_path']); ?>" 
-                         alt="<?php echo htmlspecialchars($project['title']); ?>">
-                </div>
-            <?php endif; ?>
+            <div class="project-gallery">
+                <?php if ($images && $images->num_rows > 0): ?>
+                    <?php while ($image = $images->fetch_assoc()): ?>
+                        <div class="project-image <?php echo $image['is_main'] ? 'main-image' : ''; ?>">
+                            <img src="<?php echo SITE_URL . '/' . htmlspecialchars($image['image_url']); ?>" 
+                                 alt="<?php echo htmlspecialchars($project['title']); ?>">
+                        </div>
+                    <?php endwhile; ?>
+                <?php endif; ?>
+            </div>
             
             <div class="project-description">
                 <?php echo nl2br(htmlspecialchars($project['description'])); ?>
@@ -139,17 +150,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id']) && isse
                     Собрано: <?php echo number_format($project['current_funding'], 0, ',', ' '); ?> ₽ 
                     из <?php echo number_format($project['funding_goal'], 0, ',', ' '); ?> ₽
                 </p>
+                <p>
+                    Осталось дней: <?php 
+                        $end_date = strtotime($project['created_at'] . ' + ' . $project['duration'] . ' days');
+                        $days_left = ceil(($end_date - time()) / (60 * 60 * 24));
+                        echo max(0, $days_left);
+                    ?>
+                </p>
             </div>
 
-            <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if (isset($_SESSION['user_id']) && $project['status'] === 'active'): ?>
             <section class="investment-form">
                 <h2>Инвестировать в проект</h2>
                 <form method="POST">
                     <div class="form-group">
                         <label for="amount">Сумма инвестиции (₽):</label>
-                        <input type="number" id="amount" name="amount" min="1" step="1" required>
+                        <input type="number" id="amount" name="amount" min="100" step="100" required>
+                        <p class="help-text">Минимальная сумма: 100 ₽</p>
                     </div>
-                    <button type="submit" class="button">Инвестировать</button>
+                    <button type="submit" class="btn-submit">
+                        <i class="ri-money-dollar-circle-line"></i>
+                        Инвестировать
+                    </button>
                 </form>
             </section>
             <?php endif; ?>
